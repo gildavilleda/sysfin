@@ -1,0 +1,115 @@
+.green-grad {
+    background: #3494E6;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #EC6EAD, #3494E6);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #EC6EAD, #3494E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+
+.gradientP {
+    background: #FFD333;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #FFD333, #f29a12);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #FFD333, #f29a12); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #f29a12;
+}
+
+.btn-circle {
+    width: 40px;
+    height: 40px;
+    padding: 6px 0px;
+    border-radius: 20px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.42857;
+}
+
+.container2{
+    width: 95%;
+    margin-left: 42px;
+}
+
+.centrarCont{
+    text-align: center;
+}
+
+.bajarTexto{
+    white-space:normal;
+    word-wrap:break-word;
+}
+
+.container3{
+    width: 98%;
+    margin-left: 16px;
+}
+
+#iconoBar{
+    padding: 0px;
+    display: inline-block;
+
+}
+
+.container4{
+    width: 98%;
+    margin-left: 16px;
+}
+
+.margen{
+    margin-top: 15px;
+}
+
+.marIzq{
+    margin-left: 20px;
+}
+
+.cH{
+    pointer-events: none;
+    background-color: #E8EBED;
+}
+
+.margenCard{
+    margin-top: 100px;
+}
+
+.project-tab {
+    padding: 10%;
+    margin-top: -8%;
+}
+.project-tab #tabs{
+    background: #007b5e;
+    color: #eee;
+}
+.project-tab #tabs h6.section-title{
+    color: #eee;
+}
+.project-tab #tabs .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: #0062cc;
+    background-color: transparent;
+    border-color: transparent transparent #f3f3f3;
+    border-bottom: 3px solid !important;
+    font-size: 16px;
+    font-weight: bold;
+}
+.project-tab .nav-link {
+    border: 1px solid transparent;
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+    color: #0062cc;
+    font-size: 16px;
+    font-weight: 600;
+}
+.project-tab .nav-link:hover {
+    border: none;
+}
+.project-tab thead{
+    background: #f3f3f3;
+    color: #333;
+}
+.project-tab a{
+    text-decoration: none;
+    color: #333;
+    font-weight: 600;
+}
