@@ -1,0 +1,136 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: jrodriguez
+ * Date: 12/11/2020
+ * Time: 12:19 PM
+ */
+require_once '../../functions/Database.php';
+require_once '../../functions/JsonObject.php';
+session_start();
+
+header('Access-Control-Allow-Origin: *');
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE');
+header("Content-Type: application/json; charset=UTF-8");
+
+$ObjectJson = new JsonObject();
+
+if (!isset($_SESSION['dbUser'])) {
+    echo $ObjectJson->Json('0', 'Usuario no autenticado', null);
+    http_response_code(403);
+    exit(0);
+}
+
+switch ($_SERVER['REQUEST_METHOD']) {
+    case 'POST':
+//Procedimiento para agregar
+
+            try {
+                $Db = new Database();
+                if (!$Db->Connect($_SESSION{'dbUser'}, $_SESSION['dbPass'])) {
+                    echo $ObjectJson->Json(0, 'Fallo de Conexion en la Base de Datos');
+                    exit(0);
+                }
+                $stmt = $Db->Sentencia("EXEC Com.sp_AgAdjInsumo ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?");
+
+                $stmt->bindParam(1, $_REQUEST{'DatOrdenCompra'});
+                $stmt->bindParam(2, $_REQUEST{'NumOC'});
+                $stmt->bindParam(3, $_REQUEST{'DatOrdenCompraProv'});
+                $stmt->bindParam(4, $_REQUEST{'StrPlazoEntrega'});
+                $stmt->bindParam(5, $_REQUEST{'DatRecepcionExpAlmac'});
+                $stmt->bindParam(6, $_REQUEST{'DatFechaFactura'});
+                $stmt->bindParam(7, $_REQUEST{'StrSerieFactura'});
+                $stmt->bindParam(8, $_REQUEST{'StrNoFactura'});
+                $stmt->bindParam(9, $_REQUEST{'No1HCartaSatisfaccion'});
+                $stmt->bindParam(10, $_REQUEST{'NumPubliGuateCompras'});
+                $stmt->bindParam(11, $_REQUEST{'NumEstadoFinal'});
+                $stmt->bindParam(12, $_REQUEST{'NumMontoAdjudicado'});
+                $stmt->bindParam(13, $_REQUEST{'ComDetSolicitud'});
+                $stmt->bindParam(14, $_REQUEST{'StrNombreProv'});
+                $stmt->bindParam(15, $_REQUEST{'StrNitProv'});
+
+                $stmt->execute();
+                $data = $stmt->fetchAll();
+                $data = $data[0];
+                echo $ObjectJson->Json($data['codeMensaje'], $data['strMensaje'], null);
+                $stmt->closeCursor();
+            } catch (PDOException $p) {
+                echo $ObjectJson->Json(0, $p->getMessage(), null);
+            }
+
+
+        break;
+
+    case 'PUT':
+        //Procedimiento para modificar
+        /* try {
+             $Db = new Database();
+             if (!$Db->Connect($_SESSION{'dbUser'}, $_SESSION['dbPass'])) {
+                 echo $ObjectJson->Json(0, 'Fallo de Conexion en la Base de Datos');
+                 exit(0);
+             }
+
+             $stmt = $Db->Sentencia("EXEC cita.sp_ModMedico ?, ?, ?, ?, ?, ?");
+
+             $stmt->bindParam(1, $_REQUEST{'CitNumMedico'});
+             $stmt->bindParam(2, $_REQUEST{'CitStrNombre'});
+             $stmt->bindParam(3, $_REQUEST{'CitStrApellido'});
+             $stmt->bindParam(4, $_REQUEST{'CitStrDireccion'});
+             $stmt->bindParam(5, $_REQUEST{'CitStrTelefono'});
+             $stmt->bindParam(6, $_REQUEST{'CitStrCorreoElec'});
+
+             $stmt->execute();
+             $data = $stmt->fetchAll();
+             $data = $data[0];
+             echo $ObjectJson->Json($data['codeMensaje'], $data['strMensaje'], null);
+             $stmt->closeCursor();
+         } catch (PDOException $p) {
+             echo $ObjectJson->Json(0, $p->getMessage(), null);
+         }*/
+        break;
+    case 'DELETE':
+//Procedimiento para Eliminar
+        /* try {
+             $Db = new Database();
+             if (!$Db->Connect($_SESSION{'dbUser'}, $_SESSION['dbPass'])) {
+                 echo $ObjectJson->Json(0, 'Fallo de Conexion en la Base de Datos');
+                 exit(0);
+             }
+
+             $stmt = $Db->Sentencia("EXEC cita.sp_elimMedico ?");
+
+             $stmt->bindParam(1, $_REQUEST{'CitNumMedico'});
+
+             $stmt->execute();
+             $data = $stmt->fetchAll();
+             $data = $data[0];
+             echo $ObjectJson->Json($data['codeMensaje'], $data['strMensaje'], null);
+             $stmt->closeCursor();
+         } catch (PDOException $p) {
+             echo $ObjectJson->Json(0, $p->getMessage(), null);
+         }*/
+        break;
+
+    case 'GET':
+//Procedimiento para Mostrar
+        $Db = new Database();
+        if (!$Db->Connect($_SESSION{'dbUser'}, $_SESSION['dbPass'])) {
+            echo $ObjectJson->Json(0, 'Fallo de Conexion en la Base de Datos');
+            exit(0);
+        }
+
+        if(isset($_REQUEST['ComDetSolicitud'])){
+            $ComDetSolicitud = $_REQUEST['ComDetSolicitud'];
+            $data = $Db->GetData("SELECT * FROM Com.AdjuInsumo WHERE ComDetSolicitud = '$ComDetSolicitud'", $_SESSION['dbUser'], $_SESSION['dbPass']);
+        }
+
+
+        echo $ObjectJson->Json('1', 'Ejecucion de Consulta', $data);
+        break;
+
+    default:
+        echo $ObjectJson->Json('0', 'Request no definido', null);
+        break;
+
+}
